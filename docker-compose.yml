@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    spoiler-bot:
+        image: imdevinc/mtgspoilerbot:0.3
+        restart: always
+        environment:
+            - WEBHOOK_URL=<PUTWEBHOOKHERE>
+        volumes:
+            - mtgbotdata:/tmp/cards
+
+volumes:
+    mtgbotdata:

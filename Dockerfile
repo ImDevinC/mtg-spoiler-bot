@@ -14,7 +14,7 @@ COPY --from=pipenv /tmp/requirements.txt .
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT "python"
+COPY . .
 
-CMD "main.py"
+CMD ["python", "main.py"]
 

@@ -8,18 +8,19 @@ from mythicspoiler.spoiler import MythicSpoiler
 
 WEBHOOK_URL = os.environ['WEBHOOK_URL']
 TIMER = os.environ.get('TIMER', 300)
+CARD_JSON = os.environ.get('CARD_JSON', '/tmp/cards/card.json')
 
 def get_last_card():
     data = {}
     try:
-        with open('card.json', 'r') as f:
+        with open(CARD_JSON, 'r') as f:
             data = json.load(f)
     except FileNotFoundError:
         pass
     return data.get('last_card')
 
 def save_last_card(card):
-    with open('card.json', 'w+') as f:
+    with open(CARD_JSON, 'w+') as f:
         json.dump({'last_card': card}, f)
 
 def send_to_discord(card):
