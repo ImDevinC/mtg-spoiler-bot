@@ -64,7 +64,7 @@ def send_to_discord(card, retry=False):
     try:
         response.raise_for_status()
     except Exception as ex:
-        logging.error('Failed to send %s.\nERROR: %s\n\n%s', card.url, ex, json.dumps(card))
+        logging.error('Failed to send %s.\nERROR: %s', card.url, ex)
         if not retry:
             time.sleep(DISCORD_SLEEP)
             send_to_discord(card, True)
