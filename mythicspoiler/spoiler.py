@@ -19,7 +19,6 @@ class MythicSpoiler:
             full_url = '%s%s' % (self._url, card_url)
             if full_url == last_card:
                 break
-            print(f'Getting {full_url}')
             card_list.append(MythicSpoilerCard(full_url))
         return card_list
         

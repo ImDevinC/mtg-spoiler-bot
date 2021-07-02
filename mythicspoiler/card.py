@@ -7,6 +7,13 @@ class MythicSpoilerCard:
     def __init__(self, url):
         self._url = url
         self._image_url = re.sub('.html$', '.jpg', url)
+        self._title = ''
+        self._cost = ''
+        self._type = ''
+        self._text = ''
+        self._flavor_text = ''
+        self._illustrator = ''
+        self._pt = ''
         self._get_card_details()
 
     @property
