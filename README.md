@@ -17,3 +17,4 @@ Lastly, changing `CARD_JSON` will allow you to overwrite where the last scanned 
 | `WEBHOOK_URL` | String | N/A |
 | `TIMER` | Number | `300` |
 | `CARD_JSON` | String | `/tmp/cards/cards.json` |
+| `DISCORD_SLEEP` | Number | `30` |
