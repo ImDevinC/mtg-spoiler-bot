@@ -10,6 +10,7 @@ from mythicspoiler.spoiler import MythicSpoiler
 WEBHOOK_URL = os.environ['WEBHOOK_URL']
 TIMER = os.environ.get('TIMER', 300)
 CARD_JSON = os.environ.get('CARD_JSON', '/tmp/cards/card.json')
+DISCORD_SLEEP = os.environ.get('DISCORD_SLEEP', 60)
 
 def get_last_card():
     data = {}
@@ -24,7 +25,7 @@ def save_last_card(card):
     with open(CARD_JSON, 'w+') as f:
         json.dump({'last_card': card}, f)
 
-def send_to_discord(card):
+def send_to_discord(card, retry=False):
     logging.info('Sending %s to discord', card.url)
     fields = []
     if card.cost:
@@ -60,7 +61,14 @@ def send_to_discord(card):
         ]
     }
     response = requests.post(WEBHOOK_URL, json=payload)
-    response.raise_for_status()
+    try:
+        response.raise_for_status()
+    except Exception as ex:
+        logging.error('Failed to send %s.\nERROR: %s\n\n%s', card.url, ex, json.dumps(card))
+        if not retry:
+            time.sleep(DISCORD_SLEEP)
+            send_to_discord(card, True)
+
 
 
 def main():
@@ -72,10 +80,7 @@ def main():
         cards = spoiler.get_latest_cards(last_card)
         if cards:
             for card in cards:
-                try:
-                    send_to_discord(card)
-                except Exception as ex:
-                    logging.error('Failed to send %s.\nERROR: %s\n\n%s', card.url, ex, json.dumps(card.url))
+                send_to_discord(card)
             save_last_card(cards[0].url)
         else:
             logging.info('No new cards found')
